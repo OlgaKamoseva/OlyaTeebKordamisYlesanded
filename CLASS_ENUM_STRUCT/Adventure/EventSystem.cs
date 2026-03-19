@@ -3,12 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Adventure.Player;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Adventure
 {
     public class EventSystem
     {
+        public static void NextEncounter(Player player, World map)
+        {
+            Point2D playerlocation = player.Location;
+            int result = map.Map[playerlocation.X, playerlocation.Y];
+        }
         public static void NextEncounter(Player player, Random rng)
         {
             int nextEncounterInt = rng.Next(1, 7);
@@ -212,6 +218,81 @@ namespace Adventure
                     player.Money += 25;
                     player.Backpack.Remove("nuga");
                 }
+            }
+        }
+
+        internal static void NextLocation(Player player, World map)
+        {
+            int mapXmax = map.Map.GetLength(0)-1;
+            int mapYmax = map.Map.GetLength(1)-1;
+            Console.WriteLine("Kuhu sa edasi tahad minna? Vali suund (kirjuta taht):");
+            Console.WriteLine("  N  ");
+            Console.WriteLine("W + E");
+            Console.WriteLine("  S  ");
+            string response = Console.ReadLine();
+            switch (response)
+            {
+                case "N":
+                    int nextLocation = CheckCandidate(mapYmax, player.Location.Y - 1);
+                    player.Location = new Point2D(player.Location.X, nextLocation);
+                    break;
+                case "S":
+                    nextLocation = CheckCandidate(mapYmax, player.Location.Y + 1);
+                    player.Location = new Point2D(player.Location.X, nextLocation);
+                    break;
+                case "W":
+                    nextLocation = CheckCandidate(mapXmax, player.Location.X - 1);
+                    player.Location = new Point2D(nextLocation, player.Location.Y);
+                    break;
+                case "E":
+                    nextLocation = CheckCandidate(mapXmax, player.Location.X + 1);
+                    player.Location = new Point2D(nextLocation, player.Location.Y);
+                    break;
+                default:
+                    break;
+            }
+        }
+        /// <summary>
+        /// Checks if the player location exceeds maximum value, and returns int 0 as next location if it does exceed
+        /// </summary>
+        /// <param name="maxvalue">value to compare against</param>
+        /// <param name="playerFutureLocation">players future location</param>
+        /// <returns>new value to set player at.</returns>
+        private static int CheckCandidate(int maxvalue, int playerFutureLocation, bool checkMinimum = false)
+        {
+            if (checkMinimum == false)
+            {
+                if (playerFutureLocation > maxvalue)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return playerFutureLocation;
+                }
+            }
+            else
+            {
+                if (playerFutureLocation < 0)
+                {
+                    return maxvalue;
+                }
+                else
+                {
+                    return playerFutureLocation;
+                }
+            }
+        }
+
+        internal static bool CheckWin(object location, Point2D goal)
+        {
+            if (location.ToString() == goal.ToString())
+            {
+                return true; 
+            }
+            else
+            { 
+                return false; 
             }
         }
     }
