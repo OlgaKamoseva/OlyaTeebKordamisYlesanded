@@ -10,11 +10,40 @@ namespace Adventure
 {
     public class EventSystem
     {
-        public static void NextEncounter(Player player, World map)
+        public static void NextEncounter(Player player, World map, List<Enemyduel> enemies, Enemies.Bossduel boss )
         {
+            Random rng = new Random();
             Point2D playerlocation = player.Location;
             int result = map.Map[playerlocation.X, playerlocation.Y];
+            int nextEncounterInt = rng.Next(1, 7);
+            switch (nextEncounterInt)
+            {
+                case 1:
+                    Event1_Kratt(player);
+                    break;
+                case 2:
+                    Event2_Witch(player);
+                    break;
+                case 3:
+                    Event3_Mushroom(player);
+                    break;
+                case 4:
+                    Event4_Knife(player);
+                    break;
+                case 5:
+                    Event5_Hill(player);
+                    break;
+                case 6:
+                    Event6_Shop(player);
+                    break;
+                case 7:
+                    Event7_Fight(player, enemies, boss);
+                    break;
+                default:
+                    break;
+            }
         }
+
         public static void NextEncounter(Player player, Random rng)
         {
             int nextEncounterInt = rng.Next(1, 7);
@@ -40,6 +69,28 @@ namespace Adventure
                     break;
                 default:
                     break;
+            }
+        }
+
+        public static void Event7_Fight(Player player, List<Enemyduel> enemies, Enemies.Bossduel? boss = null)
+        {
+             Random generator = new Random();
+            int newChoice = generator.Next(0, enemies.Count);
+            if (newChoice == enemies.Count)
+            {
+                AutoFighter(player, boss);
+            }
+            else
+            {
+                AutoFighter(player, enemies.ElementAt(newChoice));
+            }
+        }
+
+        private static void AutoFighter(Player player, Enemyduel? enemy = null, Enemies.Bossduel? boss = null)
+        {
+            if (boss == null)
+            {
+                boss = (Bossduel)enemy;
             }
         }
 

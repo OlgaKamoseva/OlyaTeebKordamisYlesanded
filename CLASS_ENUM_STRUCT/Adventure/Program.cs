@@ -29,6 +29,25 @@
             Player player = new Player(3, 100, new Player.Point2D(0, 0), new List<string>(), 0);
             string playAgain = "jah";
             World map = new World("HelloWorld", player.Location, new Player.Point2D(6,8));
+            List<Enemyduel> enemies = new List<Enemyduel>()
+            {
+                    new Enemyduel("Vanamees", 10, "AH MINE POE LEHMAPOUE", 1),
+                    new Enemyduel("Pohjakonn", 20, "...rooks.", 5),
+                    new Enemyduel("Elon Musk", 1, "/some alien shit/", 1),
+                    new Enemyduel("Ussike", 60, "sstststttsst", 25),
+                    new Enemyduel("Batman", 10, "IM BATMAN", 1),
+                    new Enemyduel("Blyadimir Putsin", 10, "Stand still, its only special militari operation", 1),
+                };
+            Enemies.Bossduel boss = new Enemies.Bossduel()
+            {
+                "Kahepoolne sojakirves",
+                75,
+                "Conan the Barbarian",
+                100,
+                3,
+                "-",
+                100
+            };
             do 
             {
                 Console.Clear();
