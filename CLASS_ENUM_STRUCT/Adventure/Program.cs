@@ -28,14 +28,21 @@
             Random rng = new Random();
             Player player = new Player(3, 100, new Player.Point2D(0, 0), new List<string>(), 0);
             string playAgain = "jah";
-
+            World map = new World("HelloWorld", player.Location, new Player.Point2D(6,8));
             do 
             {
                 Console.Clear();
                 Console.WriteLine("STATISTIKA ======================================");
                 player.DisplayStats();
                 Console.WriteLine("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
+
+                bool didPlayerWin = EventSystem.CheckWin(player.Location, map.Goal);
+                if (didPlayerWin)
+                {
+                    break;
+                }
                 EventSystem.NextEncounter(player, rng);
+                EventSystem.NextLocation(player, map);
                 Console.WriteLine("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
                 Console.WriteLine("\nVajuta ükskõik mis klahvi et jätkata");
                 Console.ReadLine();
